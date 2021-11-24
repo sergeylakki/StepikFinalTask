@@ -4,28 +4,29 @@ from .pages.basket_page import BasketPage
 import pytest
 link = "http://selenium1py.pythonanywhere.com/"
 
+#Класс для проверки перехода пользователей на страницу регистрации
+@pytest.mark.login_guest
+class TestLoginFromMainPage():
 
-@pytest.mark.skip(reason="no way of currently testing this")
-def test_guest_should_see_to_login_link(browser):
-    page = MainPage(browser, link)
-    page.open()
-    page.should_be_login_link()
+    #Видит ли пользователь сылку
+    def test_guest_should_see_to_login_link(self, browser):
+        page = MainPage(browser, link)
+        page.open()
+        page.should_be_login_link()
+
+    
+    #Может ли пользователь перейтина страницу входа и увидеть две формы
+    def test_guest_can_go_to_login_page(self, browser):
+        link = "http://selenium1py.pythonanywhere.com"
+        page = MainPage(browser, link)
+        page.open()
+        page.go_to_login_page()
+        login_page = LoginPage(browser, browser.current_url)
+        login_page.should_be_login_page()
 
 
-@pytest.mark.skip(reason="no way of currently testing this")    
-def test_guest_can_go_to_login_page(browser):
-    link = "http://selenium1py.pythonanywhere.com"
-    page = MainPage(browser, link)
-    page.open()
-    page.go_to_login_page()
-    login_page = LoginPage(browser, browser.current_url)
-    login_page.should_be_login_page()
 
-#def test_guest_should_see_login_and_register_form(browser):  
-#    page = LoginPage(browser, "http://selenium1py.pythonanywhere.com/ru/accounts/login/")
-#    page.open()
-#    page.should_be_login_page()
-
+#Может ли пользователь перейти в корзину и увидеть отсутствие товаров
 def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
     link = "http://selenium1py.pythonanywhere.com"
     page = MainPage(browser, link)
