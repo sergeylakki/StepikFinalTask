@@ -6,16 +6,19 @@ from .locators import BasePageLocators
 
 
 class BasePage():
+    
     #Конструктор класса,создание свойств
     def __init__(self, browser, url,timeout=10):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout);
         
+        
     #Переход по ссылке
     def open(self):
         self.browser.get(self.url)
-       
+    
+    
     #Существует ли элемент
     def is_element_present(self, how, what):
         try:
@@ -23,6 +26,7 @@ class BasePage():
         except NoSuchElementException:
             return False
         return True
+     
      
     #Проверка что элемент не появиться в течении заданого времени
     #Упадет, как только увидит искомый элемент. Не появился: успех, тест зеленый
@@ -32,6 +36,7 @@ class BasePage():
         except TimeoutException:
             return True
         return False
+    
     
     #Проверка что элемент исчезает
     #Будет ждать до тех пор, пока элемент не исчезнет
@@ -51,3 +56,8 @@ class BasePage():
     
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
+        
+        
+    def go_to_basket_page(self):
+        link = self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        link.click()
